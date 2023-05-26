@@ -38,11 +38,29 @@ public class CategoriaRepository {
 	}
 
 	public void update(Categoria categoria) throws Exception {
-		// TODO
+
+		String query = "update categoria set nome=?, tipo=? where idcategoria=? and idusuario=?";
+		Object[] params = {
+			categoria.getNome(),
+			categoria.getTipo() == TipoCategoria.RECEITAS ? 1 
+					: categoria.getTipo() == TipoCategoria.DESPESAS ? 2 
+					: 0,
+			categoria.getIdCategoria(),
+			categoria.getIdUsuario()
+		};
+		
+		jdbcTemplate.update(query, params);
 	}
 
 	public void delete(Categoria categoria) throws Exception {
-		// TODO
+
+		String query = "delete from categoria where idcategoria=? and idusuario=?";
+		Object[] params = {
+			categoria.getIdCategoria(),
+			categoria.getIdUsuario()
+		};
+		
+		jdbcTemplate.update(query, params);
 	}
 
 	public List<Categoria> findAll(Integer idUsuario) throws Exception {
@@ -60,6 +78,7 @@ public class CategoriaRepository {
 				categoria.setTipo(rs.getInt("tipo") == 1 ? TipoCategoria.RECEITAS 
 						: rs.getInt("tipo") == 2 ? TipoCategoria.DESPESAS
 						: null);
+				categoria.setIdUsuario(rs.getInt("idusuario"));
 				return categoria;
 			}				
 		});
@@ -67,9 +86,32 @@ public class CategoriaRepository {
 		return categorias;
 	}
 
-	public Categoria findById(Integer idCategoria) throws Exception {
-		// TODO
-		return null;
-	}
+	public Categoria findById(Integer idCategoria, Integer idUsuario) throws Exception {
 
+		String query = "select * from categoria where idcategoria=? and idusuario=?";
+		Object[] params = {
+			idCategoria, idUsuario	
+		};
+		
+		List<Categoria> categorias = jdbcTemplate.query(query, params, new RowMapper<Categoria>() {
+
+			@Override
+			public Categoria mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Categoria categoria = new Categoria();
+				categoria.setIdCategoria(rs.getInt("idcategoria"));
+				categoria.setNome(rs.getString("nome"));
+				categoria.setTipo(rs.getInt("tipo") == 1 ? TipoCategoria.RECEITAS 
+						: rs.getInt("tipo") == 2 ? TipoCategoria.DESPESAS
+						: null);
+				categoria.setIdUsuario(rs.getInt("idusuario"));
+				return categoria;
+			}				
+		});
+		
+		//verificando se a lista trouxe 1 categoria do banco de dados
+		if(categorias.size() == 1)
+			return categorias.get(0); //retornar o primeiro elemento da lista
+		else 
+			return null; //retornar vazio
+	}
 }

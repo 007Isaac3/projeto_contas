@@ -1,12 +1,5 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-
-<%@ page import="java.util.List" %>
-<%@ page import="br.com.cotiinformatica.entities.Categoria" %>
-
-<%
-	//capturando a lista de categorias enviada pelo controlador
-	List<Categoria> categorias = (List<Categoria>) request.getAttribute("categorias");
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,6 +25,11 @@
 
 				<h5>Consulta de categorias</h5>
 				<p>Listagem de categorias cadastradas pelo usuário.</p>
+				<hr/>
+				
+				<div class="mb-3">
+  					<strong>${mensagem}</strong>
+  				</div>
 
 				<div class="table-responsive">
 					<table id="tabela_categorias" class="table table-sm mt-3">
@@ -44,22 +42,25 @@
 						</thead>
 						<tbody>
 						
-							<% for(Categoria item : categorias) { %>
+							<c:forEach items="${categorias}" var="item">
 						
 							<tr>
-								<td><%= item.getNome() %></td>
-								<td><%= item.getTipo() %></td>
+								<td>${item.nome}</td>
+								<td>${item.tipo}</td>
 								<td>
-									<a href="#" class="btn btn-sm btn-outline-primary">
+									<a href="/projeto_contas/admin/categorias-edicao?idCategoria=${item.idCategoria}" 
+									class="btn btn-sm btn-outline-primary">
 										Editar 
 									</a> 
-									<a href="#" class="btn btn-sm btn-outline-danger">
+									<a href="/projeto_contas/admin/excluir-categoria?idCategoria=${item.idCategoria}" 
+										class="btn btn-sm btn-outline-danger"
+										onclick="return confirm('Deseja realmente excluir a categoria: ${item.nome}?');">
 										Excluir 
 									</a>
 								</td>
 							</tr>
 							
-							<% } %>
+							</c:forEach>
 							
 						</tbody>
 					</table>
