@@ -21,8 +21,10 @@ public class Conta {
 	private Double valor;
 	private Date data;
 	private String observacoes;
+	private Integer idCategoria;
+	private Integer idUsuario;
 
-	// relacionamentos
+	// relacionamentos (composições)
 	private Usuario usuario;
 	private Categoria categoria;
 }

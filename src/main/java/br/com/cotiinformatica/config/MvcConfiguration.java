@@ -15,6 +15,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import br.com.cotiinformatica.filters.CacheControlFilter;
 import br.com.cotiinformatica.repositories.CategoriaRepository;
+import br.com.cotiinformatica.repositories.ContaRepository;
 import br.com.cotiinformatica.repositories.UsuarioRepository;
 
 @Configuration
@@ -72,5 +73,13 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 	@Bean
 	public CategoriaRepository getCategoriaRepository() {
 		return new CategoriaRepository(getDataSource());
+	}
+	/*
+	 * Método para configurar a classe UsuarioRepository, definindo o seu datasource
+	 * (configuração para acesso ao BD)
+	 */
+	@Bean
+	public ContaRepository getContaRepository() {
+		return new ContaRepository(getDataSource());
 	}
 }
