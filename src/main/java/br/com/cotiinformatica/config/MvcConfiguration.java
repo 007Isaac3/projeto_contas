@@ -74,8 +74,9 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 	public CategoriaRepository getCategoriaRepository() {
 		return new CategoriaRepository(getDataSource());
 	}
+	
 	/*
-	 * Método para configurar a classe UsuarioRepository, definindo o seu datasource
+	 * Método para configurar a classe ContaRepository, definindo o seu datasource
 	 * (configuração para acesso ao BD)
 	 */
 	@Bean
@@ -83,3 +84,14 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 		return new ContaRepository(getDataSource());
 	}
 }
+
+
+
+
+
+
+
+
+
+
+

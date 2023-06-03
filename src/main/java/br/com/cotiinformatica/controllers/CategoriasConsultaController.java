@@ -43,7 +43,7 @@ public class CategoriasConsultaController {
 		return modelAndView;
 	}
 	
-	//Métodos executando quando o link de exclusão por clicado
+	//Método executado quando o link de exclusão for clicado
 	@RequestMapping(value = "/admin/excluir-categoria")
 	public ModelAndView excluirCategoria(Integer idCategoria, HttpServletRequest request) {
 		
@@ -53,9 +53,8 @@ public class CategoriasConsultaController {
 			//capturando o usuário armazenado na sessão
 			Usuario usuario = (Usuario) request.getSession().getAttribute("auth_usuario");
 			
-			//buscar a categoria no banco de dados
+			//buscar a categoria no banco de dados e excluindo
 			Categoria categoria = categoriaRepository.findById(idCategoria, usuario.getIdUsuario());
-			//excluindo a categoria
 			categoriaRepository.delete(categoria);
 			
 			modelAndView.addObject("mensagem", "Categoria excluída com sucesso.");
@@ -70,4 +69,7 @@ public class CategoriasConsultaController {
 		
 		return modelAndView;
 	}
+	
 }
+
+

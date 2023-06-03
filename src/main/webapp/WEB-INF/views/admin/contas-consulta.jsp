@@ -1,4 +1,6 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,10 +37,10 @@
   			
   				<div class="row mb-2">
   					<div class="col-md-2">
-  						<input type="date" class="form-control" required="required"/>
+  						<form:input path="dto.dataInicio" type="date" class="form-control" required="required"/>
   					</div>
   					<div class="col-md-2">
-  						<input type="date" class="form-control" required="required"/>
+  						<form:input path="dto.dataFim" type="date" class="form-control" required="required"/>
   					</div>
   					<div class="col-md-8">
   						<input type="submit" class="btn btn-success" value="Realizar Consulta"/>
@@ -47,6 +49,13 @@
   			
   			</form>  	
   			
+  			<c:if test="${contas != null && contas.size() == 0}">
+  				<div class="mt-3">
+  					<strong>Nenhuma conta foi encontrada para o período de datas especificado.</strong>
+  				</div>
+  			</c:if>
+  			  			
+  			<c:if test="${contas != null && contas.size() > 0}">
   			<div class="table-responsive mt-3">
 				<table id="tabela_contas" class="table table-sm mt-3">
 					<thead>
@@ -59,29 +68,43 @@
 							<th>Operações</th>
 						</tr>
 					</thead>
-					<tbody>						
-							
+					<tbody>		
+					
+						<c:forEach items="${contas}" var="item">
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
 							<td>
-								<a href="#" 
+								<fmt:formatDate value="${item.data}" pattern="dd/MM/yyyy"/>
+							</td>
+							<td>
+								${item.nome}								
+							</td>
+							<td>
+								<fmt:formatNumber value="${item.valor}" type="currency"/>
+							</td>
+							<td>
+								${item.categoria.nome}
+							</td>
+							<td>
+								${item.categoria.tipo}
+							</td>
+							<td>
+								<a href="/projeto_contas/admin/contas-edicao?idConta=${item.idConta}" 
 									class="btn btn-sm btn-outline-primary">
 									Editar 
 								</a> 
-								<a href="#" 
-									class="btn btn-sm btn-outline-danger">
+								<a href="/projeto_contas/admin/excluir-conta?idConta=${item.idConta}&dataInicio=${dto.dataInicio}&dataFim=${dto.dataFim}" 
+									class="btn btn-sm btn-outline-danger"
+									onclick="return confirm('Deseja realmente excluir a conta: ${item.nome}?');">
 									Excluir 
 								</a>
 							</td>
 						</tr>
-							
+						</c:forEach>	
+													
 					</tbody>
 				</table>
 			</div>
+  			</c:if>
   			
   		</div>
   	</div>

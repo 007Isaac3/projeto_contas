@@ -49,7 +49,7 @@
 								<td>${item.tipo}</td>
 								<td>
 									<a href="/projeto_contas/admin/categorias-edicao?idCategoria=${item.idCategoria}" 
-									class="btn btn-sm btn-outline-primary">
+										class="btn btn-sm btn-outline-primary">
 										Editar 
 									</a> 
 									<a href="/projeto_contas/admin/excluir-categoria?idCategoria=${item.idCategoria}" 
