@@ -8,5 +8,4 @@ public class EmailMessageDto {
 	private String emailDestinatario;
 	private String assunto;
 	private String conteudoMensagem;
-	
 }

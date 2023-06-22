@@ -16,10 +16,10 @@ import br.com.cotiinformatica.repositories.UsuarioRepository;
 
 @Controller
 public class RecuperarSenhaController {
-
+	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+
 	//Método executado quando a página é aberta
 	@RequestMapping(value = "/recuperar-senha") // Rota no navegador
 	public ModelAndView recuperarSenha() {
@@ -31,19 +31,18 @@ public class RecuperarSenhaController {
 		return modelAndView;
 	}
 	
-	//Método para capturar o SUBMIT-POST do formulário
+	//Método para capturar o SUBMIT POST do formulário
 	@RequestMapping(value = "/recuperar-senha-post", method = RequestMethod.POST)
 	public ModelAndView recuperarSenhaPost(RecuperarSenhaDto dto) {
 		
 		ModelAndView modelAndView = new ModelAndView("recuperar-senha");
 		
-		try {
-			
+		try {			
 			//consultar o usuário no banco de dados através do email informado
 			Usuario usuario = usuarioRepository.findByEmail(dto.getEmail());
 			
 			//verificando se o usuário foi encontrado
-			if(usuario !=null) {
+			if(usuario != null) {
 				
 				//gerando uma nova senha para o usuário
 				Faker faker = new Faker();
@@ -54,11 +53,10 @@ public class RecuperarSenhaController {
 				messageDto.setEmailDestinatario(usuario.getEmail());
 				messageDto.setAssunto("Recuperação de senha de usuário - Projeto Contas");
 				messageDto.setConteudoMensagem("Olá " + usuario.getNome() + "\n\n" +
-				                               "Uma nova senha de acesso foi gerada pra você. " +
-						                       "Acesse o sistema com a senha: " + usuario.getSenha() + "\n\n" +
-				                               "Att\nEquipe COTI Informática");
-				
-				//enviando o email...
+											   "Uma nova senha de acesso foi gerada para você. " + 
+						 					   "Acesse o sistema com a senha: " + usuario.getSenha() + "\n\n" +
+						 					   "Att\nEquipe COTI Informática");
+				//enviando o email..
 				EmailMessageHelper.send(messageDto);
 				//atualizar a senha no banco de dados
 				usuarioRepository.update(usuario);
@@ -73,7 +71,8 @@ public class RecuperarSenhaController {
 		catch(Exception e) {
 			modelAndView.addObject("mensagem", "Falha ao recuperar senha: " + e.getMessage());
 		}
-		modelAndView.addObject("dto", dto);
+		
+		modelAndView.addObject("dto", dto);		
 		return modelAndView;
 	}
 }
